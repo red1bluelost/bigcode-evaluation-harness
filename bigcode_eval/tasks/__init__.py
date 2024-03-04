@@ -1,10 +1,29 @@
 import inspect
 from pprint import pprint
 
-from . import (apps, codexglue_code_to_text, codexglue_text_to_text, conala,
-               concode, ds1000, gsm, humaneval, humanevalplus, humanevalpack,
-               instruct_humaneval, instruct_wizard_humaneval, mbpp, mbppplus,
-               multiple, parity, python_bugs, quixbugs, recode, santacoder_fim)
+from . import (
+    apps,
+    codexglue_code_to_text,
+    codexglue_text_to_text,
+    conala,
+    concode,
+    ds1000,
+    genericify_cpp,
+    gsm,
+    humaneval,
+    humanevalplus,
+    humanevalpack,
+    instruct_humaneval,
+    instruct_wizard_humaneval,
+    mbpp,
+    mbppplus,
+    multiple,
+    parity,
+    python_bugs,
+    quixbugs,
+    recode,
+    santacoder_fim,
+)
 
 TASK_REGISTRY = {
     **apps.create_all_tasks(),
@@ -18,6 +37,7 @@ TASK_REGISTRY = {
     **humaneval.create_all_tasks(),
     **humanevalplus.create_all_tasks(),
     **humanevalpack.create_all_tasks(),
+    **genericify_cpp.create_all_tasks(),
     "mbpp": mbpp.MBPP,
     "mbppplus": mbppplus.MBPPPlus,
     "parity": parity.Parity,
