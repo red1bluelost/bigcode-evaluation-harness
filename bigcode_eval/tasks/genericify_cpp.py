@@ -104,7 +104,29 @@ class GenericifyCpp(Task):
             index of doc in the dataset to which the generation belongs
         :return: str
         """
-        raise "Unsupported"
+        code = generation
+        open_brackets = 0
+        cut = False
+        for i, c in enumerate(code):
+            if c == "{":
+                open_brackets += 1
+            elif c == "}":
+                open_brackets -= 1
+            if open_brackets == 0:
+                code = code[: i + 1]
+                cut = True
+                break
+        if not cut:
+            code = code[: code.rfind("}")] + "}"
+        return code
+
+    def check_fn(self, code):
+        """
+        Checks whether the generated code is finished.
+        Problem: Models rarely split their code into multiple functions, but this stops the model after the 1st function.
+        Inspiration: https://github.com/THUDM/CodeGeeX/blob/23ee51505a2bcd34d59d2e271b22e5bd91475462/codegeex/benchmark/utils.py#L115
+        """
+        return code.count("{") == code.count("}")
 
     def process_results(self, generations, references):
         """
