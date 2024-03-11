@@ -73,7 +73,8 @@ class GenericifyCpp(Task):
         else:
             raise ValueError(f"Unsupported C++ type: {self.cpp_type}")
 
-        prompt = instruction.strip() + "\n\n" + starter_code.strip()
+        context = "Ensure your response is valid C++ code. Do not include anything other than you rewrite of the function."
+        prompt = context + "\n" + instruction.strip() + "\n\n" + starter_code.strip()
         return prompt.strip()
 
     def get_reference(self, doc, get_solution=False):
