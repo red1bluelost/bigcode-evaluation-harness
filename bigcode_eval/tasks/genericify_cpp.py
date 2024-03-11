@@ -74,7 +74,16 @@ class GenericifyCpp(Task):
             raise ValueError(f"Unsupported C++ type: {self.cpp_type}")
 
         context = "Ensure your response is valid C++ code. Do not include anything other than you rewrite of the function."
-        prompt = context + "\n" + instruction.strip() + "\n\n" + starter_code.strip()
+        post_context = "Give you response in a markdown code block:"
+        prompt = (
+            context
+            + "\n"
+            + instruction.strip()
+            + "\n\n```\n"
+            + starter_code.strip()
+            + "\n```\n\n"
+            + post_context
+        )
         return prompt.strip()
 
     def get_reference(self, doc, get_solution=False):
@@ -107,8 +116,14 @@ class GenericifyCpp(Task):
         """
         doc = self.get_dataset()[idx]
         prompt = self.get_prompt(doc)
-        gen = generation[len(prompt):]
-        return gen
+        gen: str = generation[len(prompt) :]
+        tick_start = gen.find("```")
+        if tick_start == -1:
+            return gen
+        tick_end = gen.find("```", tick_start + 3)
+        if tick_end == -1:
+            return gen
+        return gen[tick_start+3:tick_end]
 
     def check_fn(self, code):
         """
@@ -119,10 +134,10 @@ class GenericifyCpp(Task):
         done = 2
         count = 0
         for c in code:
-            if c == '{':
+            if c == "{":
                 count += 1
                 continue
-            elif c != '}':
+            elif c != "}":
                 continue
             count -= 1
             if count == 0:
