@@ -118,15 +118,17 @@ class GenericifyCpp(Task):
         done = 2
         count = 0
         for c in code:
-            if done == 0:
-                break
             if c == '{':
                 count += 1
-            if c == '}':
-                count -= 1
-                if count == 0:
-                    done -= 1
-        return done == 0
+                continue
+            elif c != '}':
+                continue
+            count -= 1
+            if count == 0:
+                done -= 1
+                if done == 0:
+                    return True
+        return False
 
     def process_results(self, generations, references):
         """
