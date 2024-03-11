@@ -123,7 +123,14 @@ class GenericifyCpp(Task):
         tick_end = gen.find("```", tick_start + 3)
         if tick_end == -1:
             return gen
-        return gen[tick_start+3:tick_end]
+        gen = gen[tick_start + 3 : tick_end].strip()
+        gen = (
+            gen.removeprefix("```")
+            .removesuffix("cpp")
+            .removeprefix("c++")
+            .removesuffix("```")
+        )
+        return
 
     def check_fn(self, code):
         """
