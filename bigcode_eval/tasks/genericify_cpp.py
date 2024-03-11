@@ -121,8 +121,6 @@ class GenericifyCpp(Task):
         if tick_start == -1:
             return gen
         tick_end = gen.find("```", tick_start + 3)
-        if tick_end == -1:
-            return gen
         gen = gen[tick_start + 3 : tick_end].strip()
         gen = (
             gen.removeprefix("```")
