@@ -73,8 +73,8 @@ class GenericifyCpp(Task):
         else:
             raise ValueError(f"Unsupported C++ type: {self.cpp_type}")
 
-        context = "Ensure your response is valid C++ code. Do not include anything other than you rewrite of the function."
-        post_context = "Give you response in a markdown code block:"
+        context = "Ensure your response is valid C++ code. Do not include anything other than your rewrite of the function."
+        post_context = "Response:"
         prompt = (
             context
             + "\n"
