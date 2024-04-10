@@ -130,26 +130,13 @@ class GenericifyCpp(Task):
         )
         return gen
 
-    def check_fn(self, code):
+    def check_fn(self, code: str):
         """
         Checks whether the generated code is finished.
         Problem: Models rarely split their code into multiple functions, but this stops the model after the 1st function.
         Inspiration: https://github.com/THUDM/CodeGeeX/blob/23ee51505a2bcd34d59d2e271b22e5bd91475462/codegeex/benchmark/utils.py#L115
         """
-        done = 2
-        count = 0
-        for c in code:
-            if c == "{":
-                count += 1
-                continue
-            elif c != "}":
-                continue
-            count -= 1
-            if count == 0:
-                done -= 1
-                if done == 0:
-                    return True
-        return False
+        return code.count("```") == 4
 
     def process_results(self, generations, references):
         """
